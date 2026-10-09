@@ -1,0 +1,357 @@
+PRACTICAL 2
+CREATE AND CONFIGURE VM INSTANCES ON GOOGLE CLOUD PLATFORM
+Practical objective:
+In this practical, you will create, configure, connect to, inspect, stop, start,
+and delete a virtual machine instance on Google Cloud Platform using Compute
+Engine.
+Cloud platform used:
+Google Cloud Platform, also called GCP.
+Main service used:
+Compute Engine.
+Estimated outcome:
+By the end of this practical, you will be able to:
+- Enable or open Compute Engine in Google Cloud Console.
+- Create a VM instance with basic configuration.
+- Understand machine type, region, zone, boot disk, firewall, labels, and service
+account options.
+- Connect to a VM using SSH.
+- Run basic Linux commands inside a VM.
+- Stop and start a VM.
+- Delete a VM to avoid unnecessary cost.
+- Review the VM configuration using current Google Cloud best practices.
+Important safety message:
+Virtual machines can create cloud charges while they are running, and disks can
+also create charges even when a VM is stopped. Delete test resources after the
+practical unless your teacher instructs you to keep them.
+1. BASIC THEORY BEFORE STARTING
+1.1 What is a virtual machine?
+A virtual machine, or VM, is a software-based computer that runs on physical
+hardware managed by a cloud provider.
+A VM has:
+- CPU
+- Memory
+- Operating system
+- Disk
+- Network interface
+- IP address
+1.2 What is Google Compute Engine?
+Google Compute Engine is the Google Cloud service used to create and manage
+virtual machines.
+Compute Engine provides:
+- VM instances
+- Machine types
+- Persistent disks
+- Images
+- Snapshots
+
+- Instance groups
+- Load balancing support
+- Firewall integration
+Compute Engine is an example of Infrastructure as a Service because it gives you
+control over virtual machines, operating systems, disks, and networking.
+1.3 What is a machine type?
+A machine type defines the amount of virtual CPU and memory assigned to a VM.
+Examples:
+- e2-micro
+- e2-small
+- e2-medium
+- n2-standard-2
+Choose a small machine type for lab work. Bigger machines cost more and are
+usually not needed for basic practicals.
+1.4 What is a region and zone?
+A region is a geographic location.
+Example:
+- us-central1
+- asia-south1
+- europe-west1
+A zone is a location inside a region.
+Example:
+- us-central1-a
+- us-central1-b
+- asia-south1-a
+Regions and zones decide where your VM physically runs. Choose a nearby region
+when possible to reduce latency, but follow your teacher's instructions for lab
+consistency.
+1.5 What is a boot disk?
+A boot disk contains the operating system and files required to start the VM.
+Examples of operating system images:
+- Debian
+- Ubuntu
+- CentOS Stream
+- Rocky Linux
+- Windows Server
+The boot disk is like the hard disk of a computer where the operating system is
+installed.
+1.6 What is a firewall rule?
+A firewall rule controls network traffic allowed to or from a VM.
+Examples:
+
+- Allow SSH on port 22.
+- Allow HTTP on port 80.
+- Allow HTTPS on port 443.
+Firewall rules are security gates. Do not open ports to the whole internet
+unless you understand why it is needed.
+1.7 What is SSH?
+SSH stands for Secure Shell. It is used to connect securely to a Linux VM and run
+commands remotely.
+SSH lets you operate a cloud VM from your browser or terminal, similar to using a
+keyboard and screen attached to a remote computer.
+1.8 What is OS Login?
+OS Login is a Google Cloud feature that manages Linux VM SSH access using IAM
+permissions instead of manually managing SSH keys in metadata.
+OS Login is a modern and recommended way to manage SSH access because access can
+be controlled through IAM and revoked when a user no longer has permission.
+1.9 What is Shielded VM?
+Shielded VM provides security features that help protect VMs from rootkits and
+boot-level malware.
+Shielded VM features include:
+- Secure Boot
+- Virtual Trusted Platform Module, or vTPM
+- Integrity monitoring
+Shielded VM is like extra startup protection for your virtual machine. Keep these
+features enabled unless there is a special reason to change them.
+2. REQUIREMENTS
+2.1 Hardware requirements
+- Computer or laptop
+- Internet connection
+2.2 Software requirements
+- Web browser
+2.3 Cloud requirements
+- Google Cloud account
+- Google Cloud project
+- Billing enabled if required for Compute Engine
+- Permission to create VM instances
+Required IAM permission concept:
+To create VM instances, a user commonly needs a role such as Compute Instance
+Admin or suitable custom permissions assigned by the administrator.
+
+If you cannot create a VM, it may be because billing is disabled or your account
+does not have enough permissions.
+3. STEP-BY-STEP PRACTICAL
+STEP 1: Open Google Cloud Console
+Open:
+https://console.cloud.google.com
+Sign in with your Google Cloud account.
+Use the same account and project assigned for your practical work. Using a wrong
+account may hide your project or create resources in the wrong place.
+Expected result:
+Google Cloud Console opens successfully.
+STEP 2: Select the correct project
+Use the project selector at the top of the console and choose the project for
+this practical.
+Every VM belongs to a project. Always confirm the project before creating cloud
+resources.
+Expected result:
+The correct project name is visible in the top navigation bar.
+STEP 3: Open Compute Engine
+In the search bar, type:
+Compute Engine
+Open Compute Engine.
+Compute Engine is the service where VM instances are created and managed.
+Expected result:
+The Compute Engine page opens.
+STEP 4: Enable Compute Engine API if asked
+If Google Cloud asks you to enable the Compute Engine API, click:
+Enable
+Wait for the service to initialize.
+Google Cloud services use APIs. A service must be enabled in the project before
+you can create resources from that service.
+Expected result:
+
+Compute Engine becomes available for the project.
+STEP 5: Open VM instances page
+In Compute Engine, click:
+VM instances
+The VM instances page lists all virtual machines created in the selected project.
+Expected result:
+The VM instances list page opens.
+STEP 6: Click Create Instance
+Click:
+Create Instance
+This starts the VM creation form. You will select the VM name, location, machine
+type, operating system, disk, network, and security options.
+Expected result:
+The Create an instance page opens.
+STEP 7: Enter VM name
+Enter a VM name such as:
+cloudnative-vm-1
+Use lowercase letters, numbers, and hyphens.
+Use a meaningful name so you can identify the VM later. Avoid spaces and special
+characters.
+Expected result:
+The VM name is entered.
+STEP 8: Select region and zone
+Choose a region and zone as instructed by your teacher.
+Example:
+Region: us-central1
+Zone: us-central1-a
+For lab work, any available region may work, but choosing the same region for all
+the class makes troubleshooting easier.
+Expected result:
+Region and zone are selected.
+
+STEP 9: Select machine type
+Choose a small machine type for lab work.
+Example:
+Series: E2
+Machine type: e2-micro or e2-small
+Small machine types are enough for learning Linux commands and basic web server
+tests. Larger machine types cost more.
+Expected result:
+A suitable small machine type is selected.
+STEP 10: Configure boot disk
+Click the boot disk option and choose a Linux operating system.
+Recommended beginner option:
+Operating system: Debian
+Version: Latest stable Debian version shown in the console
+Boot disk type: Balanced persistent disk or default option
+Size: 10 GB or default lab size
+Debian is a common Linux distribution and works well for beginner cloud VM
+practicals. Use default disk settings unless your teacher asks otherwise.
+Expected result:
+Boot disk is configured.
+STEP 11: Review identity and API access
+Find the section related to service account or identity.
+For a basic lab, keep the default setting if your teacher allows it, or choose a
+least-privilege service account if provided.
+A VM service account controls what Google Cloud APIs the VM can access. In
+production, avoid using overly powerful service accounts.
+Best-practice note:
+Use least privilege. Do not attach a highly privileged service account to a VM
+unless required.
+Expected result:
+Service account setting is reviewed.
+STEP 12: Add labels
+Find the labels section and add labels such as:
+Key: purpose
+Value: practical
+
+Key: owner
+Value: student
+Labels help organize resources, filter them, and understand cost or ownership.
+Using labels is a good cloud management habit.
+Expected result:
+Labels are added to the VM configuration.
+STEP 13: Review firewall options
+In the firewall section, you may see options such as:
+- Allow HTTP traffic
+- Allow HTTPS traffic
+For this basic VM practical, leave them unchecked unless your teacher asks you to
+install a web server.
+Opening HTTP or HTTPS allows external traffic to reach your VM. Do not open ports
+unless the practical requires it.
+Expected result:
+Firewall options are reviewed.
+STEP 14: Review advanced security options
+Look for security settings such as Shielded VM.
+Keep Shielded VM protections enabled if they are available by default.
+Shielded VM features provide extra protection during VM boot. Keeping them
+enabled follows modern cloud security practice.
+Expected result:
+Security options are reviewed.
+STEP 15: Create the VM
+Review all settings, then click:
+Create
+After clicking Create, Google Cloud provisions the VM. Provisioning means cloud
+resources such as CPU, memory, disk, and network are assigned to your instance.
+Expected result:
+The VM appears in the VM instances list.
+STEP 16: Wait until VM is running
+Wait until the VM status becomes:
+Running
+A VM needs some time to start, just like a physical computer needs time to boot.
+
+Expected result:
+The VM is running.
+STEP 17: Observe VM details
+In the VM instances list, observe:
+- Name
+- Zone
+- Internal IP
+- External IP, if assigned
+- Status
+Internal IP is used inside the cloud network. External IP is used to reach the VM
+from the internet. For stronger security, production VMs often avoid public
+external IPs and use controlled access methods.
+Expected result:
+Basic VM details are identified.
+STEP 18: Connect to the VM using SSH
+Click the SSH button next to the VM.
+Wait for the browser-based SSH window to open.
+Browser SSH is convenient for learning. In secure production environments,
+organizations commonly use OS Login and restricted network access such as
+Identity-Aware Proxy.
+Expected result:
+An SSH terminal opens.
+STEP 19: Run hostname command
+Inside the SSH terminal, run:
+hostname
+The hostname command shows the name of the machine you are connected to. It
+confirms that your SSH session is inside the VM.
+Expected result:
+The VM hostname appears.
+STEP 20: Check operating system information
+Run:
+cat /etc/os-release
+Expected result:
+Operating system details are displayed.
+
+STEP 21: Check disk usage
+Run:
+df -h
+Expected result:
+Disk usage information appears.
+STEP 22: Check memory usage
+Run:
+free -h
+Expected result:
+Memory usage information appears.
+STEP 23: Check CPU information
+Run:
+lscpu
+Expected result:
+CPU information appears.
+STEP 24: Update package information
+For Debian or Ubuntu, run:
+sudo apt update
+Expected result:
+Package information is updated.
+STEP 25: Optional web server test
+Only if your teacher asks you to test HTTP traffic, install Nginx:
+sudo apt install -y nginx
+Then check status:
+systemctl status nginx
+Nginx is a web server. If HTTP firewall traffic is not allowed, the web server
+may run inside the VM but not be reachable from the public internet.
+Expected result:
+
+Nginx is installed and running if this optional step is performed.
+STEP 26: Exit SSH session
+Run:
+exit
+The exit command closes the SSH session and returns you to the console.
+Expected result:
+SSH session is closed.
+STEP 27: Stop the VM
+In the VM instances page, select the VM and click:
+Stop
+Confirm if asked.
+Stopping a VM stops CPU and memory charges, but persistent disk and reserved IP
+charges may still apply. Delete resources if the practical is complete.
+Expected result:
+VM status changes to stopped or terminated.
+STEP 28: Start the VM again
+Select the stopped VM and click:
+Start / Resume
+Starting a VM boots it again. A stopped VM can be restarted later if the disk is
+kept.
+Expected result:
+VM returns to running status.
+STEP 29: Delete the VM after practical
+After completing observations, select the VM and click:
+Delete
+Confirm deletion.
+Deleting test VMs prevents unnecessary charges. Always clean up resources after
+cloud practicals unless your teacher asks you to keep them.
+Expected result:
+The VM is deleted from the VM instances list.

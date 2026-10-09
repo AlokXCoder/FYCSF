@@ -1,0 +1,139 @@
+PRACTICAL 1
+CREATE THE CLOUD ACCOUNT AND EXPLORE CLOUD CONSOLE AND BASIC SERVICES
+
+
+STEP-BY-STEP PRACTICAL
+
+STEP 1: Open Google Cloud website
+Open a web browser and go to:
+https://cloud.google.com
+
+STEP 2: Open Google Cloud Console
+Click on "Console" or directly open:
+https://console.cloud.google.com
+
+STEP 3: Sign in with a Google account
+Sign in using your Google account.
+
+STEP 4: Accept terms if asked
+If Google Cloud asks you to accept terms of service, read and accept them if you
+are allowed to proceed.
+
+STEP 5: Check the top navigation bar
+Look at the top area of the Google Cloud Console.
+You should notice:
+- Search bar
+- Project selector
+- Notifications
+- Cloud Shell icon
+- Help icon
+- Account profile icon
+
+STEP 6: Locate the project selector
+
+Find the project selector near the top of the console.
+It may show:
+- "Select a project"
+- An existing project name
+- A recently used project
+Click the project selector.
+
+STEP 8: Create a project only if required
+If your teacher asks you to create a project, click "New Project".
+Enter a project name such as:
+cloud-native-practical
+Then click "Create".
+
+STEP 9: Confirm the selected project
+After selecting or creating a project, check the project name shown at the top of
+the console.
+
+STEP 11: Explore Compute Engine
+
+In the navigation menu or search bar, search for:
+Compute Engine
+Open Compute Engine.
+
+You can view the Compute Engine section.
+
+STEP 12: Explore Cloud Storage
+Use the search bar and search for:
+Cloud Storage
+Open Cloud Storage.
+
+You can view the Cloud Storage section.
+
+STEP 13: Explore IAM
+Use the search bar and search for:
+IAM
+Open IAM and Admin.
+
+You can view IAM and permission-related options.
+
+STEP 14: Explore Cloud Run
+Search for:
+Cloud Run
+Open Cloud Run.
+
+You can view the Cloud Run page.
+
+STEP 15: Explore Kubernetes Engine
+Search for:
+Kubernetes Engine
+Open Kubernetes Engine.
+You can view the Kubernetes Engine section.
+
+STEP 16: Explore Cloud Functions
+Search for:
+Cloud Functions
+Open Cloud Functions.
+
+You can view the Cloud Functions section.
+
+STEP 17: Explore Cloud Monitoring
+Search for:
+Cloud Monitoring
+Open Cloud Monitoring.
+
+You can view monitoring dashboards or monitoring setup options.
+
+STEP 18: Explore Cloud Logging
+Search for:
+Cloud Logging
+Open Cloud Logging.
+
+You can view the logging section.
+
+STEP 19: Open Cloud Shell
+Click the Cloud Shell icon in the top-right area of the console.
+Wait for Cloud Shell to start.
+
+A terminal opens at the bottom or in a new window.
+
+STEP 20: Run a basic Cloud Shell command
+In Cloud Shell, type:
+
+gcloud --version
+Press Enter.
+
+STEP 21: Check active account in Cloud Shell
+Run:
+gcloud auth list
+
+STEP 22: Check active project in Cloud Shell
+Run:
+gcloud config get-value project
+
+STEP 23: Review billing section carefully
+Search for:
+Billing
+Open Billing.
+
+You can identify whether billing is enabled, disabled, or managed by your organization.
+
+STEP 24: Review quotas section
+Search for:
+Quotas
+Open the quotas page if available.
+
+You can view quota-related information for cloud services.

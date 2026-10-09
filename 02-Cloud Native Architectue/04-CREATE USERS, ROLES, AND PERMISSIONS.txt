@@ -1,0 +1,546 @@
+PRACTICAL 4
+CREATE USERS, ROLES, AND PERMISSIONS
+Practical objective:
+In this practical, you will understand Google Cloud Identity and Access Management,
+add a principal to a project, assign a limited role, verify access, create a
+service account, understand custom roles, and remove access after the practical.
+Cloud platform used:
+Google Cloud Platform, also called GCP.
+Main service used:
+Identity and Access Management, also called IAM.
+Estimated outcome:
+By the end of this practical, you will be able to:
+- Open IAM in Google Cloud Console.
+- Understand principals, roles, permissions, and allow policies.
+- Add a user, group, or service account as a principal.
+- Grant a predefined role using least privilege.
+- Review assigned permissions.
+- Create a service account for application identity.
+- Understand basic, predefined, and custom roles.
+- Remove temporary access after the practical.
+- Review IAM configuration using current Google Cloud best practices.
+Important safety message:
+IAM controls access to cloud resources. Wrong IAM permissions can expose data,
+allow resource deletion, or create unexpected cost. For this practical, grant
+only limited test permissions and remove them after the lab.
+1. BASIC THEORY BEFORE STARTING
+1.1 What is IAM?
+IAM stands for Identity and Access Management. It controls who can access Google
+Cloud resources and what actions they can perform.
+IAM answers:
+- Who is requesting access?
+- Which resource is being accessed?
+- What action is requested?
+- Is the action allowed?
+IAM is like the security permission system of Google Cloud. It decides who can
+view, create, modify, or delete resources.
+1.2 What is a principal?
+A principal is an identity that can be granted access.
+Examples of principals:
+- Google account user
+- Google group
+- Service account
+- Cloud Identity domain
+- Google Workspace domain
+
+In older material, you may see the word "member." In current Google Cloud IAM,
+the word "principal" is commonly used.
+1.3 What is a user?
+A user is a human identity, usually represented by an email address.
+Example:
+student@example.com
+Important note:
+In Google Cloud IAM, you usually do not create normal Gmail users directly from
+IAM. You add existing users as principals or manage organization users through
+Google Workspace or Cloud Identity.
+For this practical, "create user access" means adding an existing email identity
+to IAM with a specific role.
+1.4 What is a role?
+A role is a collection of permissions.
+Example:
+The Storage Object Viewer role contains permissions needed to view objects in
+Cloud Storage.
+You normally assign roles, not individual permissions, to users or service
+accounts.
+1.5 What is a permission?
+A permission allows a specific action on a Google Cloud resource.
+Examples:
+- storage.objects.get
+- compute.instances.create
+- resourcemanager.projects.getIamPolicy
+Permissions are very detailed. Roles group permissions together so access is
+easier to manage.
+1.6 What is an IAM allow policy?
+An allow policy is attached to a resource such as a project, folder, or
+organization. It contains role bindings.
+A role binding connects:
+- Principal
+- Role
+- Resource
+- Optional condition
+When you grant a role to a user on a project, you are adding a role binding to
+the project's IAM allow policy.
+1.7 Types of IAM roles
+Basic roles:
+- Owner
+
+- Editor
+- Viewer
+Predefined roles:
+- Google-managed roles for specific services.
+- Example: Storage Object Viewer, Compute Viewer, Logs Viewer.
+Custom roles:
+- User-defined roles containing selected permissions.
+For modern cloud security, avoid basic roles for normal work. Prefer predefined
+roles, and use custom roles only when predefined roles are still too broad.
+1.8 What is least privilege?
+Least privilege means giving only the permissions required for a task and nothing
+more.
+Example:
+If a user only needs to view storage objects, grant Storage Object Viewer instead
+of Editor or Owner.
+Least privilege reduces damage if an account is misused or compromised.
+1.9 What is a service account?
+A service account is a special identity used by applications, virtual machines,
+or automated processes.
+Example:
+A VM uses a service account to read files from a storage bucket.
+Human users should use user accounts. Applications and services should use
+service accounts.
+1.10 What is IAM condition?
+An IAM condition restricts when a role binding applies.
+Examples:
+- Access expires after a date.
+- Access applies only to a resource with a specific name.
+Conditions are useful for temporary or limited access, but they should be used
+carefully because incorrect conditions can block needed access.
+2. REQUIREMENTS
+2.1 Hardware requirements
+- Computer or laptop
+- Internet connection
+2.2 Software requirements
+- Web browser
+- Optional: Cloud Shell for command-line method
+
+2.3 Cloud requirements
+- Google Cloud account
+- Google Cloud project
+- Permission to manage IAM on the project
+- A test user email or Google group email provided by the teacher, if role
+assignment is required
+Required permission concept:
+To manage access on a project, a user commonly needs a role such as Project IAM
+Admin or suitable custom permissions assigned by an administrator.
+If you cannot add or remove IAM access, your account probably does not have IAM
+administration permission. Do not try to use another person's account.
+3. STEP-BY-STEP PRACTICAL
+STEP 1: Open Google Cloud Console
+Open:
+https://console.cloud.google.com
+Sign in with your Google Cloud account.
+Use your assigned lab account. IAM changes affect real access to cloud resources.
+Expected result:
+Google Cloud Console opens successfully.
+STEP 2: Select the correct project
+Use the project selector at the top of the console and select the project for
+this practical.
+IAM roles can be assigned at project level. Selecting the wrong project may give
+access to the wrong resources.
+Expected result:
+The correct project is selected.
+STEP 3: Open IAM and Admin
+In the search bar, type:
+IAM
+Open:
+IAM and Admin
+IAM and Admin is where you view and manage access to the selected project.
+Expected result:
+IAM and Admin page opens.
+
+STEP 4: Open the IAM page
+In IAM and Admin, click:
+IAM
+The IAM page shows principals and their assigned roles on the selected project.
+Expected result:
+The IAM policy list is visible.
+STEP 5: Observe existing principals
+Look at the list of principals.
+Observe:
+- Principal name or email
+- Principal type
+- Assigned roles
+- Inherited roles, if shown
+Some roles may be inherited from folders or organizations. Inherited permissions
+come from higher levels in the resource hierarchy.
+Expected result:
+Existing access entries are identified.
+STEP 6: Identify basic roles
+Look for any roles named:
+- Owner
+- Editor
+- Viewer
+Basic roles are very broad. They are sometimes used in small labs, but production
+environments should prefer more specific predefined or custom roles.
+Expected result:
+You can identify whether basic roles exist in the project.
+STEP 7: Plan the access to grant
+For this practical, choose a limited predefined role.
+Recommended lab role:
+Storage Object Viewer
+Purpose:
+Allows viewing Cloud Storage objects without giving full project control.
+Always decide the task first, then choose the smallest role that can perform that
+task.
+Expected result:
+
+The role to grant is selected.
+STEP 8: Add a principal
+Click:
+Grant Access
+or
+Add principal
+Enter the test user email or group email provided by your teacher.
+Example:
+student-test@example.com
+In a real organization, granting roles to groups is often better than granting
+roles directly to individual users because group membership is easier to manage.
+Expected result:
+The principal email is entered.
+STEP 9: Assign a predefined role
+In the role field, search for:
+Storage Object Viewer
+Select:
+Cloud Storage > Storage Object Viewer
+This is a predefined role. Google manages predefined roles and updates them when
+services change.
+Expected result:
+The Storage Object Viewer role is selected.
+STEP 10: Avoid basic roles
+Do not select Owner, Editor, or Viewer for this lab unless your teacher
+explicitly instructs you.
+Owner and Editor grant far more permissions than a beginner practical needs.
+Using narrow roles follows least privilege.
+Expected result:
+No broad basic role is selected for the test principal.
+STEP 11: Optional condition for temporary access
+If your teacher wants temporary access, add an IAM condition.
+Example condition idea:
+
+Access expires after a specific date and time.
+IAM conditions can reduce risk by making access temporary, but they must be
+configured carefully.
+Expected result:
+Condition is added only if instructed.
+STEP 12: Save the role binding
+Click:
+Save
+Saving updates the project's IAM allow policy by adding the selected principal
+and role.
+Expected result:
+The principal appears in the IAM list with the selected role.
+STEP 13: Verify the assigned role
+Search or filter the IAM list for the principal email.
+Confirm that the assigned role is:
+Storage Object Viewer
+Always verify IAM changes. A wrong role can give too much access or not enough
+access.
+Expected result:
+The correct role is visible for the principal.
+STEP 14: Understand effective access
+Check whether the principal has any other roles in the project or inherited from
+higher levels.
+A user's real access is the combination of all roles granted directly and
+inherited from parent resources.
+Expected result:
+You understand that multiple role bindings can combine to create broader access.
+STEP 15: Open Roles page
+In IAM and Admin, open:
+Roles
+The Roles page shows basic, predefined, and custom roles available for the
+project or organization.
+Expected result:
+
+The Roles page opens.
+STEP 16: Search for a predefined role
+Search for:
+Storage Object Viewer
+Open or view the role details.
+Role details show the permissions included in the role. This helps you understand
+what actions the role allows.
+Expected result:
+Permissions included in the predefined role are visible.
+STEP 17: Observe permissions in the role
+Read some permissions listed in the role.
+Examples may include permissions related to reading storage objects and viewing
+bucket information.
+Permissions are the actual allowed actions. Roles are collections of those
+permissions.
+Expected result:
+You can identify that the role contains multiple permissions.
+STEP 18: Understand custom roles
+On the Roles page, look for the option to create a custom role, but do not create
+one unless your teacher instructs you.
+Custom roles are useful when predefined roles are too broad, but they require
+careful maintenance because permissions can change as services evolve.
+Expected result:
+You can identify where custom roles are managed.
+STEP 19: Open Service Accounts
+In IAM and Admin, open:
+Service Accounts
+Service accounts are identities for applications, VMs, and automation, not human
+users.
+Expected result:
+The Service Accounts page opens.
+STEP 20: Create a service account
+
+Click:
+Create service account
+Enter:
+Service account name:
+cloudnative-practical-sa
+Service account ID:
+cloudnative-practical-sa
+Description:
+Service account for Practical 4 IAM lab
+Use clear names for service accounts so their purpose is easy to understand
+later.
+Expected result:
+Service account basic details are entered.
+STEP 21: Grant limited role to service account
+If asked to grant a role during creation, choose a limited role such as:
+Storage Object Viewer
+or skip role granting if your teacher wants only service account creation.
+Do not give broad roles such as Editor to service accounts. Service accounts are
+often used by programs, so over-permissioning them is risky.
+Expected result:
+The service account is created with limited or no project role, depending on
+teacher instruction.
+STEP 22: Avoid creating service account keys
+Do not create or download a service account key file for this practical unless
+your teacher specifically instructs you.
+Long-lived service account keys are sensitive credentials. Modern practice is to
+avoid keys when possible and use managed identity methods.
+Expected result:
+No unnecessary service account key is created.
+STEP 23: Review service account details
+Open the newly created service account and review:
+- Email
+- Description
+- Permissions
+- Keys tab
+Service account email is used when attaching the service account to VMs,
+
+applications, or workloads.
+Expected result:
+Service account information is reviewed.
+STEP 24: Remove test user access
+Go back to IAM page.
+Find the test principal that was added.
+Edit or remove the Storage Object Viewer role binding.
+Temporary lab access should be removed after the practical. Keeping unnecessary
+permissions violates least privilege.
+Expected result:
+The test principal no longer has the lab role.
+STEP 25: Delete the service account
+Go to Service Accounts.
+Select:
+cloudnative-practical-sa
+Click:
+Delete
+Confirm deletion.
+Delete test service accounts after practicals so unused identities do not remain
+in the project.
+Expected result:
+The test service account is deleted.
+STEP 26: Review IAM recommendations if available
+Search for:
+IAM Recommender
+or check IAM recommendations in the console if available.
+IAM Recommender can suggest removing or replacing overly broad roles based on
+permission usage history.
+Expected result:
+You can identify where IAM recommendations may appear.
+STEP 27: Review Policy Analyzer if available
+
+Search for:
+Policy Analyzer
+Open it if available in your account.
+Policy Analyzer helps answer questions such as who has what access to which
+resources.
+Expected result:
+You can identify Policy Analyzer or understand its purpose.
+STEP 28: Final access check
+Return to IAM and confirm:
+- Test user access was removed.
+- Test service account was deleted.
+- No broad role was granted accidentally.
+Final IAM review is important because access mistakes can become security risks.
+Expected result:
+No unnecessary practical IAM access remains.
+4. OPTIONAL COMMAND-LINE METHOD
+This section is optional and should be used only if your teacher wants you to
+practice Cloud Shell.
+4.1 Open Cloud Shell
+Open Cloud Shell from Google Cloud Console.
+Cloud Shell includes the gcloud CLI, which can manage IAM policies and service
+accounts.
+4.2 Check active project
+Run:
+gcloud config get-value project
+Always confirm the active project before changing IAM.
+4.3 View IAM policy
+Run:
+gcloud projects get-iam-policy PROJECT_ID
+Replace PROJECT_ID with your project ID.
+4.4 Add a role binding
+Only if instructed, run:
+
+gcloud projects add-iam-policy-binding PROJECT_ID \
+--member="user:USER_EMAIL" \
+--role="roles/storage.objectViewer"
+This grants Storage Object Viewer role to the user at project scope. Replace
+USER_EMAIL with the test email provided by your teacher.
+4.5 Remove the role binding
+Run:
+gcloud projects remove-iam-policy-binding PROJECT_ID \
+--member="user:USER_EMAIL" \
+--role="roles/storage.objectViewer"
+This removes the temporary role binding after the practical.
+4.6 Create a service account
+Run:
+gcloud iam service-accounts create cloudnative-practical-sa \
+--description="Service account for Practical 4 IAM lab" \
+--display-name="cloudnative-practical-sa"
+This creates an application identity. It does not automatically need broad
+permissions.
+4.7 Delete the service account
+Run:
+gcloud iam service-accounts delete \
+cloudnative-practical-sa@PROJECT_ID.iam.gserviceaccount.com
+Delete test service accounts after the lab to keep IAM clean.
+5. OBSERVATION TABLE
+Write your observations in this format:
+Project ID:
+IAM page opened:
+Test principal email or group:
+Role granted:
+Was a basic role used?
+Was the role predefined or custom?
+Example permissions observed inside the role:
+Was an IAM condition used?
+Service account name:
+
+Service account email:
+Was a service account key created?
+Was test user access removed?
+Was the test service account deleted?
+IAM Recommender or Policy Analyzer observed:
+6. RESULT
+A test principal was added to Google Cloud IAM with a limited predefined role.
+Role permissions were reviewed, a service account was created and inspected, and
+temporary access and test identities were removed after the practical.
+7. CONCLUSION
+This practical covered how Google Cloud IAM manages users, roles,
+permissions, and service accounts. They also learned the importance of least
+privilege, avoiding basic roles, using predefined roles, reviewing effective
+access, avoiding unnecessary service account keys, and removing temporary access.
+8. LATEST-PRACTICES REVIEW TEST
+This review checks whether the practical follows current recommended Google
+Cloud IAM practices.
+1. Was the correct project selected before changing IAM?
+Yes. IAM changes must be made only in the intended project.
+2. Was a limited predefined role used?
+Yes. A role such as Storage Object Viewer is better for this lab than Owner or
+Editor.
+3. Were basic roles avoided?
+Yes. Basic roles such as Owner, Editor, and Viewer are broad and should be
+avoided for normal production access.
+4. Was least privilege followed?
+Yes. The principal received only the access needed for the lab.
+5. Was group-based access considered?
+Yes. In real organizations, groups are usually easier to manage than assigning
+roles directly to individual users.
+6. Was the service account given limited or no role?
+Yes. Service accounts should not receive broad roles unless absolutely required.
+
+7. Were service account keys avoided?
+Yes. Long-lived keys are sensitive and should be avoided when managed identity
+options are available.
+8. Was temporary access removed after the practical?
+Yes. Temporary lab permissions should not remain after work is complete.
+9. Was the test service account deleted?
+Yes. Unused identities should be removed.
+10. Were IAM Recommender or Policy Analyzer concepts reviewed?
+Yes. These tools help audit access and move toward least privilege.
+If the points above are covered, the practical aligns with current platform
+practices.
+IAM practices and introduces current access-management recommendations.
+9. VIVA QUESTIONS
+1. What is IAM?
+2. What is a principal?
+3. What is a role?
+4. What is a permission?
+5. What is an IAM allow policy?
+6. What are basic roles?
+7. What are predefined roles?
+8. What are custom roles?
+9. What is least privilege?
+10. What is a service account?
+11. Why should service account keys be avoided?
+12. What is IAM Recommender?
+13. What is Policy Analyzer?
+14. Why should temporary access be removed?
+10. SHORT ANSWERS FOR VIVA
+1. IAM controls who can access Google Cloud resources and what they can do.
+2. A principal is an identity such as a user, group, or service account.
+3. A role is a collection of permissions.
+4. A permission allows a specific action on a resource.
+5. An IAM allow policy contains role bindings that grant roles to principals.
+6. Basic roles are broad roles such as Owner, Editor, and Viewer.
+7. Predefined roles are Google-managed roles for specific services.
+8. Custom roles are user-defined roles with selected permissions.
+9. Least privilege means granting only the permissions required for a task.
+10. A service account is an identity used by applications or services.
+11. Service account keys should be avoided because they are long-lived sensitive
+credentials.
+12. IAM Recommender suggests permission changes to reduce excessive access.
+13. Policy Analyzer helps find who has what access to which resources.
+14. Temporary access should be removed to reduce security risk.
+
+11. COMMON MISTAKES TO AVOID
+1. Granting Owner or Editor for simple tasks.
+2. Giving access in the wrong project.
+3. Granting roles directly to many users instead of groups.
+4. Forgetting to remove temporary access.
+5. Giving service accounts broad permissions.
+6. Creating service account keys unnecessarily.
+7. Ignoring inherited permissions.
+8. Not checking role details before granting.
+9. Assuming one role binding is the user's only access.
+10. Not reviewing IAM permissions regularly.
+12. PRACTICAL COMPLETION CHECKLIST
+Before submitting this practical, confirm:
+1. You opened Google Cloud Console.
+2. You selected the correct project.
+3. You opened IAM and Admin.
+4. You viewed the IAM page.
+5. You observed existing principals and roles.
+6. You identified basic roles.
+7. You selected a limited predefined role.
+8. You added a test principal if instructed.
+9. You assigned Storage Object Viewer or another limited role.
+10. You avoided Owner and Editor roles.
+11. You verified the assigned role.
+12. You reviewed role permissions.
+13. You opened the Roles page.
+14. You understood custom role purpose.
+15. You opened Service Accounts.
+16. You created a test service account.
+17. You avoided unnecessary service account keys.
+18. You removed test user access.
+19. You deleted the test service account.
+20. You reviewed IAM Recommender or Policy Analyzer concept.
+21. You completed the latest-practices review test.
+22. You answered the viva questions.
+
+

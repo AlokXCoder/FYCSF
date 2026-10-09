@@ -1,0 +1,345 @@
+PRACTICAL 3
+CREATE BUCKETS IN CLOUD STORAGE
+Practical objective:
+In this practical, you will create, configure, upload to, inspect, and delete a
+Google Cloud Storage bucket using safe beginner-friendly settings.
+Cloud platform used:
+Google Cloud Platform, also called GCP.
+Main service used:
+Cloud Storage.
+Estimated outcome:
+By the end of this practical, you will be able to:
+- Open Cloud Storage in Google Cloud Console.
+- Create a storage bucket.
+- Understand bucket name, location, storage class, access control, public access
+prevention, soft delete, and labels.
+- Upload an object to a bucket.
+- View object details.
+- Create a folder-like object prefix.
+- Download and delete objects.
+- Delete a bucket after practical completion.
+- Review bucket configuration using current Google Cloud Storage best practices.
+Important safety message:
+Cloud Storage can create charges for stored data, operations, retrieval, and
+network transfer. For lab work, upload only small test files and delete the
+bucket after the practical unless your teacher instructs you to keep it.
+1. BASIC THEORY BEFORE STARTING
+1.1 What is Cloud Storage?
+Cloud Storage is Google Cloud's object storage service. It is used to store files
+as objects inside buckets.
+Cloud Storage can store:
+- Text files
+- Images
+- Videos
+- Backups
+- Logs
+- Static website files
+- Datasets
+- Application uploads
+Cloud Storage is not the same as a normal folder on your laptop. It stores data
+as objects inside buckets and is designed for cloud-scale storage.
+1.2 What is a bucket?
+A bucket is the main container used to store objects in Cloud Storage.
+Important points:
+- Every object must be inside a bucket.
+- Bucket names must be globally unique.
+
+- Buckets cannot be nested inside other buckets.
+- A bucket has a location and default storage class.
+1.3 What is an object?
+An object is a file stored in a Cloud Storage bucket.
+An object includes:
+- File data
+- Object name
+- Metadata
+- Storage class
+- Generation/version information
+When you upload a file such as notes.txt or image.png to a bucket, it becomes an
+object.
+1.4 What is a bucket name?
+A bucket name is the globally unique name assigned to a Cloud Storage bucket.
+Bucket name rules include:
+- Must be globally unique across Cloud Storage.
+- Usually use lowercase letters, numbers, and hyphens.
+- Must start and end with a letter or number.
+- Should not contain sensitive information.
+Example:
+cloudnative-practical-3-yourname-2026
+Because bucket names are globally unique, a simple name like test-bucket is
+probably already taken. Add your project name, initials, or random number.
+1.5 What is bucket location?
+Bucket location controls where object data is stored.
+Common location types:
+- Region
+- Dual-region
+- Multi-region
+Region:
+- Data is stored in one specific region.
+- Example: us-central1.
+Dual-region:
+- Data is stored in two selected regions.
+Multi-region:
+- Data is stored across a large geographic area such as US, EU, or ASIA.
+For practical work, a single region is usually enough. For real systems, location
+affects latency, availability, compliance, and cost.
+1.6 What is storage class?
+Storage class controls cost and access pattern for objects.
+
+Common storage classes:
+Standard:
+- Best for frequently accessed data.
+Nearline:
+- Best for data accessed about once a month.
+Coldline:
+- Best for data accessed about once a quarter.
+Archive:
+- Best for rarely accessed long-term data.
+For this practical, use Standard storage because lab files are temporary and may
+be accessed immediately.
+1.7 What is Uniform Bucket-Level Access?
+Uniform Bucket-Level Access, or UBLA, uses IAM permissions for the whole bucket
+instead of object-level ACLs.
+Uniform Bucket-Level Access is recommended because it simplifies permissions and
+reduces the chance of accidental data exposure.
+1.8 What is Public Access Prevention?
+Public Access Prevention blocks public access to buckets and objects.
+It prevents access through:
+- allUsers
+- allAuthenticatedUsers
+Public access prevention helps stop accidental public exposure. Keep it enabled
+unless your teacher specifically asks you to create a public website bucket.
+1.9 What is soft delete?
+Soft delete keeps recently deleted objects or buckets recoverable for a retention
+period.
+1.10 What is lifecycle management?
+Lifecycle management automatically performs actions on objects based on rules.
+Examples:
+- Delete objects older than 30 days.
+- Move old objects to Nearline or Coldline storage.
+- Delete temporary files with a specific prefix.
+Lifecycle rules help reduce cost and clean up old data automatically.
+2. REQUIREMENTS
+2.1 Hardware requirements
+
+- Computer or laptop
+- Internet connection
+2.2 Software requirements
+- Web browser
+- Optional: Cloud Shell for command-line method
+2.3 Cloud requirements
+- Google Cloud account
+- Google Cloud project
+- Billing enabled if required
+- Permission to create Cloud Storage buckets
+Required permission concept:
+To create and manage buckets, a user commonly needs a role such as Storage Admin
+or appropriate custom permissions assigned by the administrator.
+If you cannot create a bucket, your account may not have enough IAM permissions
+or billing might not be enabled for the project.
+3. STEP-BY-STEP PRACTICAL
+STEP 1: Open Google Cloud Console
+Open:
+https://console.cloud.google.com
+Sign in with your Google Cloud account.
+Use the same account assigned for your lab work so that your permissions,
+project, and billing settings are correct.
+Expected result:
+Google Cloud Console opens successfully.
+STEP 2: Select the correct project
+Use the project selector at the top of the page and select the project for this
+practical.
+Buckets are created under a project. Selecting the wrong project can create
+confusion and billing issues.
+Expected result:
+The correct project is selected.
+STEP 3: Open Cloud Storage
+In the search bar, type:
+Cloud Storage
+Open Cloud Storage.
+
+Cloud Storage is the Google Cloud service used to create buckets and store
+objects.
+Expected result:
+The Cloud Storage page opens.
+STEP 4: Open Buckets page
+In Cloud Storage, open:
+Buckets
+The Buckets page shows all buckets in the selected project.
+Expected result:
+The buckets list page opens.
+STEP 5: Click Create
+Click:
+Create
+or
+Create bucket
+This opens the bucket creation form where you will configure name, location,
+storage class, access control, and protection options.
+Expected result:
+The bucket creation page opens.
+STEP 6: Enter a globally unique bucket name
+Enter a bucket name such as:
+cloudnative-practical-3-yourname-2026
+Replace yourname with your name, initials, roll number, or another unique value.
+Bucket names are globally unique across all Google Cloud users. If your chosen
+name is already taken, change it by adding your initials or a random number.
+Important warning:
+Do not include private information such as phone number, password, email address,
+or secret project name in a bucket name.
+Expected result:
+A valid unique bucket name is entered.
+STEP 7: Choose bucket location type
+Choose:
+
+Region
+Then select a region instructed by your teacher.
+Example:
+us-central1
+For lab work, regional storage is simple and usually sufficient. Real-world
+systems choose location based on users, compliance, availability, and cost.
+Expected result:
+Bucket location is selected.
+STEP 8: Choose default storage class
+Select:
+Standard
+Standard storage is suitable for frequently accessed data. Since lab files are
+small and temporary, Standard is a good beginner option.
+Expected result:
+Standard storage class is selected.
+STEP 9: Configure access control
+Choose:
+Uniform bucket-level access
+if the option is shown.
+Uniform bucket-level access is recommended because IAM controls access for the
+bucket and objects consistently.
+Expected result:
+Uniform bucket-level access is selected or enabled.
+STEP 10: Configure public access prevention
+Choose:
+Enforce public access prevention
+or keep public access prevention enabled if it is already inherited.
+Public access prevention helps ensure your bucket and objects are not
+accidentally made public on the internet.
+Expected result:
+Public access prevention is enforced or inherited from project/organization
+policy.
+
+STEP 11: Review object protection settings
+If soft delete is shown, keep the default soft delete protection or configure it
+as instructed by your teacher.
+Soft delete protects against accidental deletion. It can help recover deleted
+objects or buckets for a limited time.
+Expected result:
+Object protection settings are reviewed.
+STEP 12: Add labels
+Add labels such as:
+Key: purpose
+Value: practical
+Key: owner
+Value: student
+Labels help organize resources and identify why a resource was created.
+Expected result:
+Labels are added to the bucket.
+STEP 13: Create the bucket
+Review all settings and click:
+Create
+After clicking Create, Google Cloud creates the bucket with your selected
+configuration.
+Expected result:
+The bucket is created and appears in the bucket list.
+STEP 14: Open the bucket
+Click the bucket name in the bucket list.
+Opening the bucket lets you upload, view, download, and delete objects.
+Expected result:
+The bucket details page opens.
+STEP 15: Create a small test file on your computer
+Create a small text file on your computer named:
+cloudnative_test.txt
+Add this content:
+
+This is a test file for Cloud Storage Practical 3.
+Use a small text file for the practical. Avoid uploading personal, private, or
+large files.
+Expected result:
+A small test file is ready for upload.
+STEP 16: Upload the test file
+Inside the bucket, click:
+Upload files
+Select cloudnative_test.txt and upload it.
+Uploading a file stores it as an object inside the bucket.
+Expected result:
+The file appears in the object list.
+STEP 17: Open object details
+Click the uploaded object name.
+Observe details such as:
+- Object name
+- Size
+- Storage class
+- Created time
+- URL or gsutil URI
+Object details help you understand how Cloud Storage tracks metadata for each
+uploaded file.
+Expected result:
+Object metadata is visible.
+STEP 18: Copy the object URI
+Find the object URI, usually in this format:
+gs://bucket-name/cloudnative_test.txt
+The gs:// URI is used by Google Cloud tools to identify Cloud Storage objects.
+Expected result:
+The object URI is copied or written in your observation table.
+STEP 19: Download the object
+Use the download option to download the file back to your computer.
+Downloading confirms that the object was stored successfully and can be retrieved
+
+when needed.
+Expected result:
+The test file is downloaded successfully.
+STEP 20: Create a folder-like prefix
+In the bucket, click:
+Create folder
+Create a folder named:
+practical-files
+Cloud Storage does not use folders exactly like a normal file system. Folder
+names are usually object name prefixes that help organize objects.
+Expected result:
+A folder-like prefix appears in the bucket.
+STEP 21: Upload another test file into the folder
+Open the practical-files folder and upload another small text file.
+Example file name:
+notes.txt
+This shows how object prefixes can organize files inside a bucket.
+Expected result:
+The second file appears under practical-files.
+STEP 22: Review permissions
+Open the Permissions tab for the bucket.
+Do not add public access.
+Permissions control who can read, write, or manage bucket data. Avoid granting
+access to allUsers or allAuthenticatedUsers.
+Expected result:
+Bucket permissions are reviewed and no public access is added.
+STEP 23: Review lifecycle option
+Find lifecycle management options if available in the console.
+Do not create complex lifecycle rules unless your teacher asks you.
+Optional simple rule concept:
+Delete temporary objects older than a selected number of days.
+
+Lifecycle rules are useful for automatically cleaning old data and reducing
+storage cost.
+Expected result:
+Lifecycle management option is identified.
+STEP 24: Delete uploaded objects
+Delete:
+- cloudnative_test.txt
+- notes.txt
+- practical-files folder or prefix if shown
+A bucket must usually be empty before it can be deleted. Delete test objects
+first.
+Expected result:
+The bucket becomes empty.
+STEP 25: Delete the bucket
+Go back to the bucket list, select your bucket, and click:
+Delete
+Confirm deletion by typing the required text if asked.
+Deleting the bucket prevents unnecessary storage charges after the practical.
+Remember that bucket names can potentially be reused by others after deletion.
+Expected result:
+The bucket is deleted.
